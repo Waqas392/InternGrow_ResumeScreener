@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: interngrow-resume-screening-api
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt && python -m spacy download en_core_web_sm
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./interngrow.db
+      - key: SECRET_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: '["https://your-frontend-domain.vercel.app"]'
+      - key: SEED_EMAIL
+        value: demo@example.com
+      - key: SEED_PASSWORD
+        sync: false

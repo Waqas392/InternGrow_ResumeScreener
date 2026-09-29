@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./interngrow.db
+      - SECRET_KEY=local-dev-secret
+      - ALLOWED_ORIGINS=["http://localhost:5173"]
+      - SEED_EMAIL=demo@example.com
+      - SEED_PASSWORD=ChangeMe123!
+    volumes:
+      - backend_data:/app
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  backend_data:
